@@ -1,0 +1,15 @@
+body {
+	background-color: #246;
+	color: #fff;
+	text-align: center;
+}
+
+#leftCol {
+	background-color: #444;
+	text-align: left;
+}
+
+#rightCol {
+	background-color: #444;
+	text-align: left;
+}
