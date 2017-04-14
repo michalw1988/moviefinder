@@ -36,3 +36,42 @@ body {
 #tmdbLogo {
 	width: 36px;
 }
+
+.genreItem {
+	background-color: #222;
+	display: inline-block;
+	margin: 3px;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.unselectable {
+	-moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
+.optionDiv {
+	margin: 5px;
+}
+
+.inputField {
+	border: 1px solid #444;
+	background-color: #eee;
+	color: black;
+	width: 50px;
+}
+
+.optionSpan {
+	display: inline-block;
+	width: 80px;
+}
+
+.sortOption {
+	background-color: #222;
+	margin: 3px;
+	padding: 5px;
+	cursor: pointer;
+}

@@ -16,6 +16,7 @@ To overcome CORS error, add http://crossorigin.me/ to the beginning of the API r
 
 ****************************************** */
 
+var genres = [];
 
 $(document).ready(function () {
 
@@ -29,25 +30,46 @@ $(document).ready(function () {
 	}
 
 	$.ajax(settings).done(function (response) {
-		console.log(response);
-		$('#genresDiv').html(JSON.stringify(response));
+		for(var i in response.genres) {
+			//console.log('ID: ' + response.genres[i].id);
+			//console.log(response.genres[i].name);
+			
+			var genresHTML = $('#genresList').html();
+			genresHTML += '<div class="genreItem unselectable" data-id='+ i +'>' + response.genres[i].name + '</div>';
+			$('#genresList').html(genresHTML);
+			
+			genres.push({
+				id: response.genres[i].id,
+				name: response.genres[i].name,
+				status: 0
+			});
+			
+		}
+		
+		console.log(genres);
+	
+		//console.log(response);
+		//$('#genresDiv').html(JSON.stringify(response));
 	});
 
 	
-	
-	/*
-	jsonUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=5bfe27f2b48db1e3ad05dd9b4585bd16&language=en-US';
-	
-	console.log('Getting data...');
-	$.getJSON(jsonUrl)
-  .done(function(json) {
-    console.log('Data received.');
-		$('#rightCol').html(JSON.stringify(json));
-  })
-  .fail(function( jqxhr, textStatus, error ) {
-    var err = textStatus + ", " + error;
-    console.log( "Request Failed: " + err );
-});
-*/
+	$('#genresList').on('click', '.genreItem', function(){
+		//alert($(this).data('id'));
+		var itemId = $(this).data('id');
+		//console.log(genres[itemId].id);
+		if (genres[itemId].status === 0) {
+			genres[itemId].status = 1;
+			$(this).css('background-color', 'green');
+		} else if (genres[itemId].status === 1) {
+			genres[itemId].status = 2;
+			$(this).css('background-color', 'red');
+		} else if (genres[itemId].status === 2) {
+			genres[itemId].status = 0;
+			$(this).css('background-color', '#222');
+		}
+		
+		
+		
+	});
 	
 });
