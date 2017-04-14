@@ -18,8 +18,24 @@ To overcome CORS error, add http://crossorigin.me/ to the beginning of the API r
 
 
 $(document).ready(function () {
+
+	var settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=5bfe27f2b48db1e3ad05dd9b4585bd16",
+		"method": "GET",
+		"headers": {},
+		"data": "{}"
+	}
+
+	$.ajax(settings).done(function (response) {
+		console.log(response);
+		$('#genresDiv').html(JSON.stringify(response));
+	});
+
 	
 	
+	/*
 	jsonUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=5bfe27f2b48db1e3ad05dd9b4585bd16&language=en-US';
 	
 	console.log('Getting data...');
@@ -32,5 +48,6 @@ $(document).ready(function () {
     var err = textStatus + ", " + error;
     console.log( "Request Failed: " + err );
 });
+*/
 	
 });
