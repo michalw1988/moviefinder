@@ -17,6 +17,7 @@ To overcome CORS error, add http://crossorigin.me/ to the beginning of the API r
 ****************************************** */
 
 var genres = [];
+var sortType;
 
 $(document).ready(function () {
 
@@ -47,16 +48,11 @@ $(document).ready(function () {
 		}
 		
 		console.log(genres);
-	
-		//console.log(response);
-		//$('#genresDiv').html(JSON.stringify(response));
 	});
 
 	
 	$('#genresList').on('click', '.genreItem', function(){
-		//alert($(this).data('id'));
 		var itemId = $(this).data('id');
-		//console.log(genres[itemId].id);
 		if (genres[itemId].status === 0) {
 			genres[itemId].status = 1;
 			$(this).css('background-color', 'green');
@@ -67,9 +63,13 @@ $(document).ready(function () {
 			genres[itemId].status = 0;
 			$(this).css('background-color', '#222');
 		}
-		
-		
-		
+	});
+	
+	$('.sortOption').on('click', function(){
+		$('.sortOption').css('background-color', '#222');
+		$(this).css('background-color', 'green');
+		sortType = $(this).data('type');
+		console.log(sortType);
 	});
 	
 });

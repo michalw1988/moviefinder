@@ -75,3 +75,10 @@ body {
 	padding: 5px;
 	cursor: pointer;
 }
+
+#findButton {
+	background-color: orange;
+	border: none;
+	width: 100%;
+	height: 50px;
+}

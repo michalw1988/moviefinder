@@ -46,14 +46,14 @@
 				<div class="col-lg-3 col-md-3 col-sm-4">
 					<div class="searchParamsCol">
 						<p>Sort results by</p>
-						<div class="sortOption">Popularity descending</div>
-						<div class="sortOption">Popularity ascending</div>
-						<div class="sortOption">Score descending</div>
-						<div class="sortOption">Score ascending</div>
-						<div class="sortOption">Votes descending</div>
-						<div class="sortOption">Votes ascending</div>
-						<div class="sortOption">Release year descending</div>
-						<div class="sortOption">Release year ascending</div>
+						<div class="sortOption" data-type='popularity.desc'>Popularity descending</div>
+						<div class="sortOption" data-type='popularity.asc'>Popularity ascending</div>
+						<div class="sortOption" data-type='vote_average.desc'>Score descending</div>
+						<div class="sortOption" data-type='vote_average.asc'>Score ascending</div>
+						<div class="sortOption" data-type='vote_count.desc'>Votes descending</div>
+						<div class="sortOption" data-type='vote_count.asc'>Votes ascending</div>
+						<div class="sortOption" data-type='release_date.desc'>Release year descending</div>
+						<div class="sortOption" data-type='release_date.asc'>Release year ascending</div>
 					</div>
 				</div>
 			</div>
@@ -62,7 +62,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div id="searchButtonCol">
-						Search button
+						<button id="findButton">Find me some movies!</button>
 					</div>
 				</div>
 			</div>
