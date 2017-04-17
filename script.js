@@ -29,8 +29,10 @@ var votesToValue = 1000000;
 var sortType = 'popularity.desc';
 var withGenres = '';
 var withoutGenres = '';
-
 var page = 1;
+var totalPages;
+
+var genresHelper = {};
 
 var globalResponse;
 
@@ -50,8 +52,6 @@ $(document).ready(function () {
 
 	$.ajax(settings).done(function (response) {
 		for(var i in response.genres) {
-			//console.log('ID: ' + response.genres[i].id);
-			//console.log(response.genres[i].name);
 			
 			var genresHTML = $('#genresList').html();
 			genresHTML += '<div class="genreItem unselectable" data-id='+ i +'>' + response.genres[i].name + '</div>';
@@ -63,9 +63,8 @@ $(document).ready(function () {
 				status: 0
 			});
 			
+			genresHelper[response.genres[i].id] = response.genres[i].name;
 		}
-		
-		//console.log(genres);
 	});
 
 	
@@ -90,8 +89,6 @@ $(document).ready(function () {
 		$(this).css('background-color', 'green');
 		$(this).children('.optionTick').html('<span class="glyphicon glyphicon-ok"></span>');
 		sortType = $(this).data('type');
-		//console.log(sortType);
-		
 	});
 	
 	
@@ -103,7 +100,6 @@ $(document).ready(function () {
 	$('#adultSettings').on('click', function(){
 		if(adultMovies) {
 			adultMovies = false;
-			adultMovies = false;
 			$('#adultSettings').html('No');
 			$('#adultSettings').css('background-color', 'red');
 		} else {
@@ -112,6 +108,39 @@ $(document).ready(function () {
 			$('#adultSettings').css('background-color', 'green');
 		}
 	});
+	
+	
+	$('#firstPageLink').on('click', function() {
+		if(page !== 1) {
+			page = 1;
+			getMovieList();
+		}
+	});
+	
+	
+	$('#previousPageLink').on('click', function() {
+		if(page > 1) {
+			page--;
+			getMovieList();
+		}
+	});
+	
+	
+	$('#nextPageLink').on('click', function() {
+		if(page < totalPages) {
+			page++;
+			getMovieList();
+		}
+	});
+	
+	
+	$('#lastPageLink').on('click', function() {
+		if(page !== totalPages) {
+			page = totalPages;
+			getMovieList();
+		}
+	});
+	
 	
 });
 
@@ -228,14 +257,6 @@ function validateVotesTo() {
 
 
 function getMovieList() {
-	console.log('sort options: ' + sortType);
-	console.log('year from: ' + yearFromValue);
-	console.log('year to: ' + yearToValue);
-	console.log('score from: ' + scoreFromValue);
-	console.log('score to: ' + scoreToValue);
-	console.log('votes from: ' + votesFromValue);
-	console.log('votes to: ' + votesToValue);
-	
 	withGenres = '';
 	withoutGenres = '';
 	
@@ -255,18 +276,7 @@ function getMovieList() {
 		withoutGenres = withoutGenres.slice(0,withoutGenres.length-1);
 	}
 	
-	console.log('included genres: ' + withGenres);
-	console.log('excluded genres: ' + withoutGenres);
-	
 	var searchString = 'https://api.themoviedb.org/3/discover/movie?api_key='+apiKey+'&language=en-US&sort_by='+sortType+'&include_adult='+adultMovies+'&include_video=false&page='+page+'&release_date.gte='+yearFromValue+'&release_date.lte='+yearToValue+'&vote_count.gte='+votesFromValue+'&vote_count.lte='+votesToValue+'&vote_average.gte='+scoreFromValue+'&vote_average.lte='+scoreToValue+'&with_genres='+withGenres+'&without_genres='+withoutGenres;
-	
-	// TODO: bouild URL string
-	
-	/*
-	https://api.themoviedb.org/3/discover/movie?api_key=5bfe27f2b48db1e3ad05dd9b4585bd16&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=1&release_date.gte=1900&release_date.lte=2017&vote_count.gte=0&vote_count.lte=1000000&vote_average.gte=1&vote_average.lte=10&with_genres=28,12&without_genres=36,14
-	
-	*/
-	
 
 	var settings = {
 		"async": true,
@@ -282,11 +292,34 @@ function getMovieList() {
 	
 		var resultsHtml = '';
 		for (var i in response.results) {
-			resultsHtml += '<div>' + response.results[i].title + ' (' + response.results[i].release_date.slice(0,4) + ')' + '</div>';
+			
+			var description = response.results[i].overview;
+			if (description.length > 300) {
+				description = description.slice(0,300) + '...';
+			}
+			
+			resultsHtml += 
+				'<div class="col-md-6 paddingRemover">' + 
+					'<div class="movieCell">' +
+					'<img class="posterImg" src=https://image.tmdb.org/t/p/w185_and_h278_bestv2' + response.results[i].poster_path + ' alt="movie poster">' +
+					'<h4>' + response.results[i].title + ' (' + response.results[i].release_date.slice(0,4) + ')' + '</h4>' +
+					'<h6>Score: <strong>' + response.results[i].vote_average + '</strong> based on <strong>' + response.results[i].vote_count + '</strong> votes</h6>' +
+					'<p>' + description + '</p>' +
+					'<h6><strong>Genres:</strong> ' + getGenres(response.results[i].genre_ids) + '</h6>' +
+					'</div>' +
+				'</div>';
 		}
 	
-		//$('#foundMovies').html(JSON.stringify(response));
 		$('#foundMovies').html(resultsHtml);
+		
+		if (response.total_pages > 1000) {
+			totalPages = 1000;
+		} else {
+			totalPages = response.total_pages;
+		}
+		
+		$('#paginationDiv').css('display', 'block');
+		$('#currentPageText').html('page <strong>' + page + '</strong> out of <strong>' + totalPages + '</strong> total pages');
 	});
 }
 
@@ -298,4 +331,18 @@ function initOptionsValues() {
 	$('#scoreTo').val(scoreToValue);
 	$('#votesFrom').val(votesFromValue);
 	$('#votesTo').val(votesToValue);
+}
+
+
+function getGenres(arr) {
+	var genreString = '';
+	
+	for (var i in arr) {
+		genreString += genresHelper[arr[i]] + ', ';
+	}
+	if (genreString.length > 0) {
+		genreString = genreString.slice(0, genreString.length-2);
+	}
+	
+	return genreString;
 }
