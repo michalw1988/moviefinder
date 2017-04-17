@@ -27,33 +27,34 @@
 				<div class="col-lg-7 col-md-6 col-sm-5">
 					<div class="searchParamsCol" id="genresDiv">
 						<p>Genres you want to include / exclude</p>
-						<div id="genresList">
-							
-						</div>
+						<div id="genresList"></div>
 					</div>
+					
+					<div id="adultSettingsBox">Inculde adult movies? <div id="adultSettings" class="unselectable">Yes</div></div>
 				</div>
 				<div class="col-lg-2 col-md-3 col-sm-3">
 					<div class="searchParamsCol">
 						<p>Other options</p>
-						<div class="optionDiv"><span class="optionSpan">Year from: </span><input class="inputField" id="yearFrom" type="text"></div>
-						<div class="optionDiv"><span class="optionSpan">Year to: </span><input class="inputField" id="yearTo" type="text"></div>
-						<div class="optionDiv"><span class="optionSpan">Score from: </span><input class="inputField" id="scoreFrom" type="text"></div>
-						<div class="optionDiv"><span class="optionSpan">Score to: </span><input class="inputField" id="scoreTo" type="text"></div>
-						<div class="optionDiv"><span class="optionSpan">Votes from: </span><input class="inputField" id="yearFrom" type="text"></div>
-						<div class="optionDiv"><span class="optionSpan">Votes to: </span><input class="inputField" id="yearTo" type="text"></div>
+						<div class="optionDiv"><span class="optionSpan">Year from: </span><input class="inputField" id="yearFrom" type="text"><span class="validationStar" id="yearFromStar">*</span></div>
+						<div class="optionDiv"><span class="optionSpan">Year to: </span><input class="inputField" id="yearTo" type="text"><span class="validationStar" id="yearToStar">*</span></div>
+						<div class="optionDiv"><span class="optionSpan">Score from: </span><input class="inputField" id="scoreFrom" type="text"><span class="validationStar" id="scoreFromStar">*</span></div>
+						<div class="optionDiv"><span class="optionSpan">Score to: </span><input class="inputField" id="scoreTo" type="text"><span class="validationStar" id="scoreToStar">*</span></div>
+						<div class="optionDiv"><span class="optionSpan">Votes from: </span><input class="inputField" id="votesFrom" type="text"><span class="validationStar" id="votesFromStar">*</span></div>
+						<div class="optionDiv"><span class="optionSpan">Votes to: </span><input class="inputField" id="votesTo" type="text"><span class="validationStar" id="votesToStar">*</span></div>
+						<div id="validationText">Incorrect search criteria</div>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-3 col-sm-4">
 					<div class="searchParamsCol">
 						<p>Sort results by</p>
-						<div class="sortOption" data-type='popularity.desc'>Popularity descending</div>
-						<div class="sortOption" data-type='popularity.asc'>Popularity ascending</div>
-						<div class="sortOption" data-type='vote_average.desc'>Score descending</div>
-						<div class="sortOption" data-type='vote_average.asc'>Score ascending</div>
-						<div class="sortOption" data-type='vote_count.desc'>Votes descending</div>
-						<div class="sortOption" data-type='vote_count.asc'>Votes ascending</div>
-						<div class="sortOption" data-type='release_date.desc'>Release year descending</div>
-						<div class="sortOption" data-type='release_date.asc'>Release year ascending</div>
+						<div class="sortOption" data-type='popularity.desc'>Popularity descending<span class="optionTick pull-right"><span class="glyphicon glyphicon-ok"></span><span></div>
+						<div class="sortOption" data-type='popularity.asc'>Popularity ascending<span class="optionTick pull-right"></span></div>
+						<div class="sortOption" data-type='vote_average.desc'>Score descending<span class="optionTick pull-right"></span></div>
+						<div class="sortOption" data-type='vote_average.asc'>Score ascending<span class="optionTick pull-right"></span></div>
+						<div class="sortOption" data-type='vote_count.desc'>Votes descending<span class="optionTick pull-right"></span></div>
+						<div class="sortOption" data-type='vote_count.asc'>Votes ascending<span class="optionTick pull-right"></span></div>
+						<div class="sortOption" data-type='release_date.desc'>Release year descending<span class="optionTick pull-right"></span></div>
+						<div class="sortOption" data-type='release_date.asc'>Release year ascending<span class="optionTick pull-right"></span></div>
 					</div>
 				</div>
 			</div>
@@ -67,19 +68,10 @@
 				</div>
 			</div>
 			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="movieCell">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius faucibus risus vitae cursus. Nullam sodales faucibus metus, sed mattis lectus porttitor ut. Integer imperdiet est efficitur, dictum enim et, laoreet risus. Etiam dictum quis enim non aliquam. Donec tempus elit quis aliquam sagittis. Donec vestibulum eleifend justo.</p>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="movieCell">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius faucibus risus vitae cursus. Nullam sodales faucibus metus, sed mattis lectus porttitor ut. Integer imperdiet est efficitur, dictum enim et, laoreet risus. Etiam dictum quis enim non aliquam. Donec tempus elit quis aliquam sagittis. Donec vestibulum eleifend justo.</p>
-					</div>
-				</div>
-			</div>
+			<div id="nothingFoundMessage">No movies found. Try changing your search criteria.</div>
 			
+			<div id="foundMovies"></div>
+			<!--
 			<div class="row">
 				<div class="col-md-6">
 					<div class="movieCell">
@@ -92,19 +84,7 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="row">
-				<div class="col-md-6">
-					<div class="movieCell">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius faucibus risus vitae cursus. Nullam sodales faucibus metus, sed mattis lectus porttitor ut. Integer imperdiet est efficitur, dictum enim et, laoreet risus. Etiam dictum quis enim non aliquam. Donec tempus elit quis aliquam sagittis. Donec vestibulum eleifend justo.</p>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="movieCell">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius faucibus risus vitae cursus. Nullam sodales faucibus metus, sed mattis lectus porttitor ut. Integer imperdiet est efficitur, dictum enim et, laoreet risus. Etiam dictum quis enim non aliquam. Donec tempus elit quis aliquam sagittis. Donec vestibulum eleifend justo.</p>
-					</div>
-				</div>
-			</div>
+			-->
 			
 			<div class="row">
 				<div class="col-sm-12">
