@@ -9,11 +9,6 @@ https://developers.themoviedb.org/3/
 API Key:
 5bfe27f2b48db1e3ad05dd9b4585bd16
 
-Sample request:
-https://api.themoviedb.org/3/movie/550?api_key=5bfe27f2b48db1e3ad05dd9b4585bd16
-
-To overcome CORS error, add http://crossorigin.me/ to the beginning of the API request URL
-
 ****************************************** */
 
 var apiKey = '5bfe27f2b48db1e3ad05dd9b4585bd16';
@@ -33,8 +28,6 @@ var page = 1;
 var totalPages;
 
 var genresHelper = {};
-
-var globalResponse;
 
 
 $(document).ready(function () {
@@ -142,32 +135,38 @@ $(document).ready(function () {
 	});
 	
 	
+	$('#foundMovies').on('click', '.movieCell', function() {
+		var movieId = $(this).data('id');
+		openIMDBlink(movieId);
+	});
+	
+	
 });
 
 
 function validateSearchCriteria(){
-		$('.validationStar').css('display', 'none');
-		$('#validationText').css('display', 'none');
-		
-		validateYearFrom();
-		validateYearTo();
-		validateScoreFrom();
-		validateScoreTo();
-		validateVotesFrom();
-		validateVotesTo();
-		
-		if(
-			validateYearFrom() &&
-			validateYearTo() &&
-			validateScoreFrom() &&
-			validateScoreTo() &&
-			validateVotesFrom() &&
-			validateVotesTo()
-		) {
-			getMovieList();
-		} else {
-			$('#validationText').css('display', 'block');
-		}
+	$('.validationStar').css('display', 'none');
+	$('#validationText').css('display', 'none');
+	
+	validateYearFrom();
+	validateYearTo();
+	validateScoreFrom();
+	validateScoreTo();
+	validateVotesFrom();
+	validateVotesTo();
+	
+	if(
+		validateYearFrom() &&
+		validateYearTo() &&
+		validateScoreFrom() &&
+		validateScoreTo() &&
+		validateVotesFrom() &&
+		validateVotesTo()
+	) {
+		getMovieList();
+	} else {
+		$('#validationText').css('display', 'block');
+	}
 }
 
 
@@ -288,7 +287,6 @@ function getMovieList() {
 	}
 
 	$.ajax(settings).done(function (response) {
-		globalResponse = response;
 	
 		var resultsHtml = '';
 		for (var i in response.results) {
@@ -299,13 +297,13 @@ function getMovieList() {
 			}
 			
 			resultsHtml += 
-				'<div class="col-md-6 paddingRemover">' + 
-					'<div class="movieCell">' +
-					'<img class="posterImg" src=https://image.tmdb.org/t/p/w185_and_h278_bestv2' + response.results[i].poster_path + ' alt="movie poster">' +
-					'<h4>' + response.results[i].title + ' (' + response.results[i].release_date.slice(0,4) + ')' + '</h4>' +
-					'<h6>Score: <strong>' + response.results[i].vote_average + '</strong> based on <strong>' + response.results[i].vote_count + '</strong> votes</h6>' +
-					'<p>' + description + '</p>' +
-					'<h6><strong>Genres:</strong> ' + getGenres(response.results[i].genre_ids) + '</h6>' +
+				'<div class="col-md-6 paddingRemover">' +
+					'<div class="movieCell" data-id="' + response.results[i].id + '">' +
+						'<img class="posterImg" src=https://image.tmdb.org/t/p/w185_and_h278_bestv2' + response.results[i].poster_path + ' alt="movie poster">' +
+						'<h4>' + response.results[i].title + ' (' + response.results[i].release_date.slice(0,4) + ')' + '</h4>' +
+						'<h6>Score: <strong>' + response.results[i].vote_average + '</strong> based on <strong>' + response.results[i].vote_count + '</strong> votes</h6>' +
+						'<p>' + description + '</p>' +
+						'<h6><strong>Genres:</strong> ' + getGenres(response.results[i].genre_ids) + '</h6>' +
 					'</div>' +
 				'</div>';
 		}
@@ -345,4 +343,23 @@ function getGenres(arr) {
 	}
 	
 	return genreString;
+}
+
+
+function openIMDBlink(id) {
+	
+		var settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "https://api.themoviedb.org/3/movie/" + id + "?language=en-US&api_key=5bfe27f2b48db1e3ad05dd9b4585bd16",
+		"method": "GET",
+		"headers": {},
+		"data": "{}"
+	}
+
+	$.ajax(settings).done(function (response) {
+		var imdbId = response.imdb_id;
+		window.open('http://www.imdb.com/title/' + imdbId, '_blank');
+	});
+
 }
