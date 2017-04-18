@@ -1,2 +1,2 @@
-#MyApp
-This is movie finder
+# Heading
+MovieFinder site is supposed to, well, film some movies for you.
