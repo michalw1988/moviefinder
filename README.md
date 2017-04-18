@@ -1,2 +1,5 @@
-# Heading
-MovieFinder site is supposed to, well, film some movies for you.
+# MovieFinder
+MovieFinder is a simple site where you can discover new movies.
+Specify your favorite genres, decide on release year, movie popularity, score and browse the results. You'll soon have tons of new movies to watch!
+---
+The page is built on [MDb API](https://developers.themoviedb.org/3/).
