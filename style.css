@@ -1,14 +1,16 @@
 body {
-	background-color: #246;
+	background-color: #043D59;
 	color: #fff;
 	text-align: center;
 }
 
 .searchParamsCol {
-	background-color: #666;
+	background-color: #222;
+	border: solid 2px orange;
 	text-align: left;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	padding: 5px;
 }
 
 #searchButtonCol {
@@ -18,26 +20,81 @@ body {
 }
 
 #header {
-	background-color: #444;
+	background-color: #222;
+	border-bottom: solid 4px orange;
+}
+
+#header > p:nth-of-type(1) {
+	color: orange;
+	font-size: 60px;
+	line-height: 55px;
+	margin: 5px;
+	margin-top: 14px;
+}
+
+#header > p:nth-of-type(1) > span:nth-of-type(2) {
+	color: white;
+}
+
+#header > p:nth-of-type(2) {
+	color: orange;
+	font-size: 20px;
+	margin-top: 0px;
 }
 
 #footer {
-	background-color: #333;
+	background-color: #222;
 	margin-top: 20px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	border-top: solid 4px orange;
+}
+
+#footer p {
+	padding: 0px;
+	margin: 5px;
+}
+
+#footer a {
+	color: orange;
+}
+
+#footer img {
+	margin: 5px;
+	filter: hue-rotate(258deg);
 }
 
 .movieCell {
-	background-color: #666;
+	background-color: #222;
+	color: #fff;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	text-align: left;
 	height: 230px;
+	padding-right: 5px;
 	cursor: pointer;
+}
+
+.movieCell > h4 {
+	color: orange;
+	padding-top: 5px;
+}
+
+.movieCell > h6:nth-of-type(1) strong {
+	color: orange;
+}
+
+.movieCell > h6:nth-of-type(2) {
+	color: orange;
+}
+
+.movieCell > h6:nth-of-type(2) strong {
+	color: #fff;
 }
 
 #paginationDiv {
 	display: none;
-	background-color: #777;
+	background-color: #222;
 	margin-top: 20px;
 	padding: 10px;
 	position: relative;
@@ -48,7 +105,7 @@ body {
 }
 
 .genreItem {
-	background-color: #222;
+	background-color: #000;
 	display: inline-block;
 	margin: 3px;
 	padding: 5px;
@@ -71,12 +128,12 @@ body {
 	border: 1px solid #444;
 	background-color: #eee;
 	color: black;
-	width: 66px;
+	width: 75px;
 }
 
 .optionSpan {
 	display: inline-block;
-	width: 75px;
+	width: 80px;
 }
 
 .sortOption {
@@ -87,7 +144,13 @@ body {
 }
 
 .sortOption:nth-of-type(1) {
-	background-color: green;
+	background-color: orange;
+}
+
+.searchParamsCol > p:nth-of-type(1) {
+	font-size: 18px;
+	margin-left: 3px;
+	color: orange;
 }
 
 #findButton {
@@ -95,16 +158,18 @@ body {
 	border: none;
 	width: 100%;
 	height: 50px;
+	font-size: 20px;
 }
 
 .validationStar {
 	display: none;
-	color: #ff5500;
+	color: orange;
 }
 
 #validationText {
 	display: none;
-	color: #ff5500;
+	color: orange;
+	margin-left: 3px;
 }
 
 #nothingFoundMessage {
@@ -112,16 +177,22 @@ body {
 }
 
 #adultSettingsBox {
-	background-color: #666;
+	background-color: #222;
+	border: solid 2px orange;
 	text-align: left;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding: 5px;
+}
+
+#adultSettingsBox > span {
+	color: orange;
+	font-size: 18px;
+	margin-left: 3px;
 }
 
 #adultSettings {
 	display: inline-block;
 	text-align: center;
-	background-color: green;
+	background-color: orange;
 	padding: 5px;
 	margin-left: 5px;
 	width: 50px;
@@ -132,6 +203,16 @@ body {
 	height: 230px;
 	float: left;
 	margin-right: 5px;
+}
+
+.placeholderPoster {
+	background-color: #333;
+	text-align: center;
+	width: 153.05px;
+	height: 230px;
+	float: left;
+	margin-right: 5px;
+	line-height: 230px;
 }
 
 .paddingRemover:nth-of-type(odd) {

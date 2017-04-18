@@ -65,13 +65,13 @@ $(document).ready(function () {
 		var itemId = $(this).data('id');
 		if (genres[itemId].status === 0) {
 			genres[itemId].status = 1;
-			$(this).css('background-color', 'green');
+			$(this).css('background-color', 'orange');
 		} else if (genres[itemId].status === 1) {
 			genres[itemId].status = 2;
 			$(this).css('background-color', 'red');
 		} else if (genres[itemId].status === 2) {
 			genres[itemId].status = 0;
-			$(this).css('background-color', '#222');
+			$(this).css('background-color', 'black');
 		}
 	});
 	
@@ -79,7 +79,7 @@ $(document).ready(function () {
 	$('.sortOption').on('click', function(){
 		$('.sortOption').css('background-color', '#222');
 		$('.sortOption .optionTick').html('');
-		$(this).css('background-color', 'green');
+		$(this).css('background-color', 'orange');
 		$(this).children('.optionTick').html('<span class="glyphicon glyphicon-ok"></span>');
 		sortType = $(this).data('type');
 	});
@@ -98,7 +98,7 @@ $(document).ready(function () {
 		} else {
 			adultMovies = true;
 			$('#adultSettings').html('Yes');
-			$('#adultSettings').css('background-color', 'green');
+			$('#adultSettings').css('background-color', 'orange');
 		}
 	});
 	
@@ -287,37 +287,47 @@ function getMovieList() {
 	}
 
 	$.ajax(settings).done(function (response) {
-	
-		var resultsHtml = '';
-		for (var i in response.results) {
+		if(response.total_results === 0) {
+			$('#nothingFoundMessage').css('display', 'block');
+			$('#foundMovies').html('');
+			page = 1;
+			totalPages = 1;
+			$('#paginationDiv').css('display', 'block');
+			$('#currentPageText').html('page <strong>' + page + '</strong> out of <strong>' + totalPages + '</strong> total pages');
+		} else {
+			$('#nothingFoundMessage').css('display', 'none');
+			var resultsHtml = '';
+			for (var i in response.results) {	
+				var description = response.results[i].overview;
+				if (description.length > 300) {
+					description = description.slice(0,300) + '...';
+				}
+				
+				resultsHtml += 
+					'<div class="col-md-6 paddingRemover">' +
+						'<div class="movieCell" data-id="' + response.results[i].id + '">' +
+							//'<img class="posterImg" src=https://image.tmdb.org/t/p/w185_and_h278_bestv2' + response.results[i].poster_path + ' alt="movie poster">' +
+							getMoviePoster(response.results[i].poster_path) +
+							'<h4>' + response.results[i].title + ' (' + response.results[i].release_date.slice(0,4) + ')' + '</h4>' +
+							'<h6>Score: <strong>' + response.results[i].vote_average + '</strong> based on <strong>' + response.results[i].vote_count + '</strong> votes</h6>' +
+							'<p>' + description + '</p>' +
+							'<h6><strong>Genres:</strong> ' + getGenres(response.results[i].genre_ids) + '</h6>' +
+						'</div>' +
+					'</div>';
+			}
+		
+			$('#foundMovies').html(resultsHtml);
 			
-			var description = response.results[i].overview;
-			if (description.length > 300) {
-				description = description.slice(0,300) + '...';
+			if (response.total_pages > 1000) {
+				totalPages = 1000;
+			} else {
+				totalPages = response.total_pages;
 			}
 			
-			resultsHtml += 
-				'<div class="col-md-6 paddingRemover">' +
-					'<div class="movieCell" data-id="' + response.results[i].id + '">' +
-						'<img class="posterImg" src=https://image.tmdb.org/t/p/w185_and_h278_bestv2' + response.results[i].poster_path + ' alt="movie poster">' +
-						'<h4>' + response.results[i].title + ' (' + response.results[i].release_date.slice(0,4) + ')' + '</h4>' +
-						'<h6>Score: <strong>' + response.results[i].vote_average + '</strong> based on <strong>' + response.results[i].vote_count + '</strong> votes</h6>' +
-						'<p>' + description + '</p>' +
-						'<h6><strong>Genres:</strong> ' + getGenres(response.results[i].genre_ids) + '</h6>' +
-					'</div>' +
-				'</div>';
-		}
-	
-		$('#foundMovies').html(resultsHtml);
-		
-		if (response.total_pages > 1000) {
-			totalPages = 1000;
-		} else {
-			totalPages = response.total_pages;
+			$('#paginationDiv').css('display', 'block');
+			$('#currentPageText').html('page <strong>' + page + '</strong> out of <strong>' + totalPages + '</strong> total pages');		
 		}
 		
-		$('#paginationDiv').css('display', 'block');
-		$('#currentPageText').html('page <strong>' + page + '</strong> out of <strong>' + totalPages + '</strong> total pages');
 	});
 }
 
@@ -347,7 +357,6 @@ function getGenres(arr) {
 
 
 function openIMDBlink(id) {
-	
 		var settings = {
 		"async": true,
 		"crossDomain": true,
@@ -361,5 +370,18 @@ function openIMDBlink(id) {
 		var imdbId = response.imdb_id;
 		window.open('http://www.imdb.com/title/' + imdbId, '_blank');
 	});
-
 }
+
+
+function getMoviePoster(posterLink) {
+	console.log(posterLink);
+	if(posterLink){
+		return '<img class="posterImg" src=https://image.tmdb.org/t/p/w185_and_h278_bestv2' + posterLink + ' alt="movie poster">';
+	} else {
+		return '<div class="placeholderPoster">Poster unavailable</div>';
+	}
+}
+
+
+
+
