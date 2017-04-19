@@ -11,8 +11,10 @@ API Key:
 
 ****************************************** */
 
-var apiKey = '5bfe27f2b48db1e3ad05dd9b4585bd16';
 
+
+// global variables
+var apiKey = '5bfe27f2b48db1e3ad05dd9b4585bd16';
 var genres = [];
 var adultMovies = true;
 var yearFromValue = 1900;
@@ -26,14 +28,16 @@ var withGenres = '';
 var withoutGenres = '';
 var page = 1;
 var totalPages;
+var genresHelper = {}; // holds only genre id and name (for quick assigning genres to movies)
 
-var genresHelper = {};
 
 
 $(document).ready(function () {
 
+	// after loading the page, reset search parameters
 	initOptionsValues();
 
+	// get genres from API
 	var settings = {
 		"async": true,
 		"crossDomain": true,
@@ -42,14 +46,16 @@ $(document).ready(function () {
 		"headers": {},
 		"data": "{}"
 	}
-
+	
 	$.ajax(settings).done(function (response) {
 		for(var i in response.genres) {
-			
+		
+			// display genres possible to select
 			var genresHTML = $('#genresList').html();
 			genresHTML += '<div class="genreItem unselectable" data-id='+ i +'>' + response.genres[i].name + '</div>';
 			$('#genresList').html(genresHTML);
 			
+			// and fill the genres lists
 			genres.push({
 				id: response.genres[i].id,
 				name: response.genres[i].name,
@@ -61,6 +67,7 @@ $(document).ready(function () {
 	});
 
 	
+	// selecting / deselecting genre in setting box
 	$('#genresList').on('click', '.genreItem', function(){
 		var itemId = $(this).data('id');
 		if (genres[itemId].status === 0) {
@@ -76,6 +83,7 @@ $(document).ready(function () {
 	});
 	
 	
+	// selecting sort options
 	$('.sortOption').on('click', function(){
 		$('.sortOption').css('background-color', '#222');
 		$('.sortOption .optionTick').html('');
@@ -85,11 +93,14 @@ $(document).ready(function () {
 	});
 	
 	
+	// handling the "find" button click
 	$('#findButton').on('click', function() {
+		// validating the search options
 		validateSearchCriteria();
 	});
 	
 	
+	// selecting / deselecting option to find also adult movies
 	$('#adultSettings').on('click', function(){
 		if(adultMovies) {
 			adultMovies = false;
@@ -103,6 +114,7 @@ $(document).ready(function () {
 	});
 	
 	
+	// pagination - go to first page
 	$('#firstPageLink').on('click', function() {
 		if(page !== 1) {
 			page = 1;
@@ -111,6 +123,7 @@ $(document).ready(function () {
 	});
 	
 	
+	// pagination - go to previous page
 	$('#previousPageLink').on('click', function() {
 		if(page > 1) {
 			page--;
@@ -119,6 +132,7 @@ $(document).ready(function () {
 	});
 	
 	
+	// pagination - go to next page
 	$('#nextPageLink').on('click', function() {
 		if(page < totalPages) {
 			page++;
@@ -127,6 +141,7 @@ $(document).ready(function () {
 	});
 	
 	
+	// pagination - go to last page
 	$('#lastPageLink').on('click', function() {
 		if(page !== totalPages) {
 			page = totalPages;
@@ -135,19 +150,22 @@ $(document).ready(function () {
 	});
 	
 	
+	// handling click on movie cell - navigating to movie's IMDB page
 	$('#foundMovies').on('click', '.movieCell', function() {
 		var movieId = $(this).data('id');
 		openIMDBlink(movieId);
 	});
 	
-	
 });
 
 
+
+// validating search criteria set by user
 function validateSearchCriteria(){
 	$('.validationStar').css('display', 'none');
 	$('#validationText').css('display', 'none');
 	
+	// validate every input
 	validateYearFrom();
 	validateYearTo();
 	validateScoreFrom();
@@ -163,13 +181,16 @@ function validateSearchCriteria(){
 		validateVotesFrom() &&
 		validateVotesTo()
 	) {
+		// if everything is fine, get the movies list from the API
 		getMovieList();
 	} else {
+		// if something is wrong, display the validation text
 		$('#validationText').css('display', 'block');
 	}
 }
 
 
+// input validation - year from
 function validateYearFrom() {
 	var yearFrom = $('#yearFrom').val();
 	if (yearFrom > 1800 && yearFrom < 2100 ) {
@@ -182,6 +203,7 @@ function validateYearFrom() {
 }
 
 
+// input validation - year to
 function validateYearTo() {
 	var yearTo = $('#yearTo').val();
 	if (yearTo > 1800 && yearTo < 2100 ) {
@@ -194,6 +216,7 @@ function validateYearTo() {
 }
 
 
+// input validation - score from
 function validateScoreFrom() {
 	var scoreFrom = $('#scoreFrom').val();
 	if (scoreFrom >= 1 && scoreFrom <= 10 ) {
@@ -206,6 +229,7 @@ function validateScoreFrom() {
 }
 
 
+// input validation - score to
 function validateScoreTo() {
 	var scoreTo = $('#scoreTo').val();
 	if (scoreTo >= 1 && scoreTo <= 10 ) {
@@ -218,10 +242,12 @@ function validateScoreTo() {
 }
 
 
+// input validation - votes from
 function validateVotesFrom() {
 	var votesFrom = parseInt($('#votesFrom').val());
 	$('#votesFrom').val(parseInt($('#votesFrom').val()));
 	
+	// reset field value if it's not correct
 	if(isNaN($('#votesFrom').val())) {
 		$('#votesFrom').val('');
 	}
@@ -236,10 +262,12 @@ function validateVotesFrom() {
 }
 
 
+// input validation - votes to
 function validateVotesTo() {
 	var votesTo = parseInt($('#votesTo').val());
 	$('#votesTo').val(parseInt($('#votesTo').val()));
 	
+	// reset field value if it's not correct
 	if(isNaN($('#votesTo').val())) {
 		$('#votesTo').val('');
 	}
@@ -254,11 +282,12 @@ function validateVotesTo() {
 }
 
 
-
+// getting movie list from the API
 function getMovieList() {
 	withGenres = '';
 	withoutGenres = '';
 	
+	// specifying which genres to include / exclude
 	for (var i in genres) {
 		if (genres[i].status === 1) {
 			withGenres += genres[i].id + ',';
@@ -267,14 +296,15 @@ function getMovieList() {
 		}
 	}
 	
+	// removing unneeded comas from genres lists
 	if (withGenres.length > 0) {
 		withGenres = withGenres.slice(0,withGenres.length-1);
 	}
-	
 	if (withoutGenres.length > 0) {
 		withoutGenres = withoutGenres.slice(0,withoutGenres.length-1);
 	}
 	
+	// building ajax query string
 	var searchString = 'https://api.themoviedb.org/3/discover/movie?api_key='+apiKey+'&language=en-US&sort_by='+sortType+'&include_adult='+adultMovies+'&include_video=false&page='+page+'&release_date.gte='+yearFromValue+'&release_date.lte='+yearToValue+'&vote_count.gte='+votesFromValue+'&vote_count.lte='+votesToValue+'&vote_average.gte='+scoreFromValue+'&vote_average.lte='+scoreToValue+'&with_genres='+withGenres+'&without_genres='+withoutGenres;
 
 	var settings = {
@@ -285,9 +315,12 @@ function getMovieList() {
 		"headers": {},
 		"data": "{}"
 	}
-
+	
+	// handling the API response
 	$.ajax(settings).done(function (response) {
+	
 		if(response.total_results === 0) {
+			// if no movies found
 			$('#nothingFoundMessage').css('display', 'block');
 			$('#foundMovies').html('');
 			page = 1;
@@ -295,9 +328,14 @@ function getMovieList() {
 			$('#paginationDiv').css('display', 'block');
 			$('#currentPageText').html('page <strong>' + page + '</strong> out of <strong>' + totalPages + '</strong> total pages');
 		} else {
+			// if some movies found
 			$('#nothingFoundMessage').css('display', 'none');
 			var resultsHtml = '';
+			
+			// biulding movie cells
 			for (var i in response.results) {	
+
+				// trimming movie description if needed
 				var description = response.results[i].overview;
 				if (description.length > 300) {
 					description = description.slice(0,300) + '...';
@@ -318,12 +356,14 @@ function getMovieList() {
 		
 			$('#foundMovies').html(resultsHtml);
 			
+			// somehow API only allows for 1000 movie pages, so if there's more of the, just don't show them
 			if (response.total_pages > 1000) {
 				totalPages = 1000;
 			} else {
 				totalPages = response.total_pages;
 			}
 			
+			// showing and updating pagination
 			$('#paginationDiv').css('display', 'block');
 			$('#currentPageText').html('page <strong>' + page + '</strong> out of <strong>' + totalPages + '</strong> total pages');		
 		}
@@ -332,6 +372,7 @@ function getMovieList() {
 }
 
 
+// initiating search options after opening the page
 function initOptionsValues() {
 	$('#yearFrom').val(yearFromValue);
 	$('#yearTo').val(new Date().getFullYear());
@@ -342,6 +383,7 @@ function initOptionsValues() {
 }
 
 
+// assigning genres for a movie from genresHelper list based on IDs returned from API
 function getGenres(arr) {
 	var genreString = '';
 	
@@ -356,23 +398,7 @@ function getGenres(arr) {
 }
 
 
-function openIMDBlink(id) {
-		var settings = {
-		"async": true,
-		"crossDomain": true,
-		"url": "https://api.themoviedb.org/3/movie/" + id + "?language=en-US&api_key=5bfe27f2b48db1e3ad05dd9b4585bd16",
-		"method": "GET",
-		"headers": {},
-		"data": "{}"
-	}
-
-	$.ajax(settings).done(function (response) {
-		var imdbId = response.imdb_id;
-		window.open('http://www.imdb.com/title/' + imdbId, '_blank');
-	});
-}
-
-
+// getting movie poster and, if there's no poster for a movie, displaying a placeholder
 function getMoviePoster(posterLink) {
 	console.log(posterLink);
 	if(posterLink){
@@ -383,5 +409,21 @@ function getMoviePoster(posterLink) {
 }
 
 
+// opening an IMDB page for a movie after clicking on it
+function openIMDBlink(id) {
+	// first, an IMDB ID is needed to it has to be returned from TMDb API
+	var settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "https://api.themoviedb.org/3/movie/" + id + "?language=en-US&api_key=5bfe27f2b48db1e3ad05dd9b4585bd16",
+		"method": "GET",
+		"headers": {},
+		"data": "{}"
+	}
 
-
+	// then, a new page is opened
+	$.ajax(settings).done(function (response) {
+		var imdbId = response.imdb_id;
+		window.open('http://www.imdb.com/title/' + imdbId, '_blank');
+	});
+}
