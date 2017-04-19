@@ -4,21 +4,20 @@ body {
 	text-align: center;
 }
 
-.searchParamsCol {
-	background-color: #222;
-	border: solid 2px orange;
-	text-align: left;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding: 5px;
+
+
+/* --- for items that cannot be user-selected --- */
+.unselectable {
+	-moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 }
 
-#searchButtonCol {
-	background-color: #222;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
 
+
+/* --- header settings --- */
 #header {
 	background-color: #222;
 	border-bottom: solid 4px orange;
@@ -42,66 +41,16 @@ body {
 	margin-top: 0px;
 }
 
-#footer {
+
+
+/* --- search settings --- */
+.searchParamsCol {
 	background-color: #222;
-	margin-top: 20px;
-	padding-top: 10px;
-	padding-bottom: 20px;
-	border-top: solid 4px orange;
-}
-
-#footer p {
-	padding: 0px;
-	margin: 5px;
-}
-
-#footer a {
-	color: orange;
-}
-
-#footer img {
-	margin: 5px;
-	filter: hue-rotate(258deg);
-}
-
-.movieCell {
-	background-color: #222;
-	color: #fff;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	border: solid 2px orange;
 	text-align: left;
-	height: 230px;
-	padding-right: 5px;
-	cursor: pointer;
-}
-
-.movieCell > h4 {
-	color: orange;
-	padding-top: 5px;
-}
-
-.movieCell > h6:nth-of-type(1) strong {
-	color: orange;
-}
-
-.movieCell > h6:nth-of-type(2) {
-	color: orange;
-}
-
-.movieCell > h6:nth-of-type(2) strong {
-	color: #fff;
-}
-
-#paginationDiv {
-	display: none;
-	background-color: #222;
-	margin-top: 20px;
-	padding: 10px;
-	position: relative;
-}
-
-#tmdbLogo {
-	width: 36px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 5px;
 }
 
 .genreItem {
@@ -110,14 +59,6 @@ body {
 	margin: 3px;
 	padding: 5px;
 	cursor: pointer;
-}
-
-.unselectable {
-	-moz-user-select: none;
-   -khtml-user-select: none;
-   -webkit-user-select: none;
-   -ms-user-select: none;
-   user-select: none;
 }
 
 .optionDiv {
@@ -153,14 +94,6 @@ body {
 	color: orange;
 }
 
-#findButton {
-	background-color: orange;
-	border: none;
-	width: 100%;
-	height: 50px;
-	font-size: 20px;
-}
-
 .validationStar {
 	display: none;
 	color: orange;
@@ -170,10 +103,6 @@ body {
 	display: none;
 	color: orange;
 	margin-left: 3px;
-}
-
-#nothingFoundMessage {
-	display: none;
 }
 
 #adultSettingsBox {
@@ -199,6 +128,58 @@ body {
 	cursor: pointer;
 }
 
+
+
+/* --- search action --- */
+#searchButtonCol {
+	background-color: #222;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#findButton {
+	background-color: orange;
+	border: none;
+	width: 100%;
+	height: 50px;
+	font-size: 20px;
+}
+
+#nothingFoundMessage {
+	display: none;
+}
+
+
+
+/* --- for single movie cell --- */
+.movieCell {
+	background-color: #222;
+	color: #fff;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	text-align: left;
+	height: 230px;
+	padding-right: 5px;
+	cursor: pointer;
+}
+
+.movieCell > h4 {
+	color: orange;
+	padding-top: 5px;
+}
+
+.movieCell > h6:nth-of-type(1) strong {
+	color: orange;
+}
+
+.movieCell > h6:nth-of-type(2) {
+	color: orange;
+}
+
+.movieCell > h6:nth-of-type(2) strong {
+	color: #fff;
+}
+
 .posterImg {
 	height: 230px;
 	float: left;
@@ -215,12 +196,26 @@ body {
 	line-height: 230px;
 }
 
+
+
+/* --- removing padding for odd and even movie cells --- */
 .paddingRemover:nth-of-type(odd) {
 	padding-left: 0px;
 }
 
 .paddingRemover:nth-of-type(even) {
 	padding-right: 0px;
+}
+
+
+
+/* --- pagination --- */
+#paginationDiv {
+	display: none;
+	background-color: #222;
+	margin-top: 20px;
+	padding: 10px;
+	position: relative;
 }
 
 .pageLink {
@@ -248,8 +243,36 @@ body {
 
 
 
+/* --- footer settings --- */
+#footer {
+	background-color: #222;
+	margin-top: 20px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	border-top: solid 4px orange;
+}
+
+#footer p {
+	padding: 0px;
+	margin: 5px;
+}
+
+#footer a {
+	color: orange;
+}
+
+#footer img {
+	margin: 5px;
+	filter: hue-rotate(258deg);
+}
+
+#tmdbLogo {
+	width: 36px;
+}
 
 
+
+/* --- different movie cells padding on smaller screens --- */
 @media (max-width: 992px) {
   .paddingRemover {
 		padding-right: 0px;
